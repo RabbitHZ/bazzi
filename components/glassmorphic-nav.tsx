@@ -32,21 +32,20 @@ interface ImageLoadState {
   svgContent: string | null
 }
 
-const COLOR_PALETTE = [
-  "#cfe2ff",
-  "#9ec5fe",
-  "#6ea8fe",
-  "#3d8bfd",
-  "#0d6efd",
-  "#0a58ca",
-  "#084298",
-  "#052c65",
-  "#198754",
-  "#d1e7dd",
-  "#7dd3fc",
-  "#fbbf24",
-  "#f87171",
-  "#a855f7",
+const PASTEL_COLORS = [
+  "#a5d8ff", "#74c0fc", "#99e9f2", "#66d9e8",
+  "#b2f2bb", "#8ce99a", "#96f2d7", "#63e6be",
+  "#ffc9c9", "#ffa8a8", "#fcc2d7", "#eebefa",
+  "#d0bfff", "#b197fc", "#bac8ff", "#91a7ff",
+  "#ffd8a8", "#ffec99", "#fff3bf", "#ffe066",
+]
+
+const VIVID_COLORS = [
+  "#3b82f6", "#0d6efd", "#0ea5e9", "#06b6d4",
+  "#22c55e", "#10b981", "#14b8a6", "#198754",
+  "#ef4444", "#f43f5e", "#ec4899", "#d946ef",
+  "#a855f7", "#8b5cf6", "#6366f1", "#4f46e5",
+  "#f97316", "#f59e0b", "#eab308", "#000000",
 ]
 
 function copyToClipboard(text: string, label: string) {
@@ -70,6 +69,7 @@ export function GlassmorphicNav() {
   })
   const [resultData, setResultData] = useState<ResultData | null>(null)
   const [showColorPalette, setShowColorPalette] = useState(false)
+  const [colorTab, setColorTab] = useState<"pastel" | "vivid">("pastel")
   const [isPreview, setIsPreview] = useState(true)
   const [imageLoadState, setImageLoadState] = useState<ImageLoadState>({
     loading: false,
@@ -218,13 +218,9 @@ export function GlassmorphicNav() {
           <h2 className="text-white font-bold text-xl mb-6">Create Your Badge</h2>
 
           {/* Info Box */}
-          <div className="mb-6 p-3 rounded-lg bg-green-500/10 border border-green-500/30">
-            <p className="text-green-300 text-xs leading-relaxed">
-              If you would like to have your count start at some other value, please open an{" "}
-              <a href="#" className="underline hover:text-green-200">
-                issue
-              </a>{" "}
-              and I will update it for you ASAP.
+          <div className="mb-6 p-3 rounded-lg bg-blue-500/10 border border-blue-500/30">
+            <p className="text-blue-300 text-xs leading-relaxed">
+              Track your page views in real-time and display them with a beautiful badge.
             </p>
           </div>
 
@@ -287,8 +283,32 @@ export function GlassmorphicNav() {
 
               {showColorPalette && (
                 <div className="p-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-lg">
+                  {/* Tab Buttons */}
+                  <div className="flex gap-2 mb-3">
+                    <button
+                      onClick={() => setColorTab("pastel")}
+                      className={`flex-1 py-1.5 px-3 rounded-md text-xs font-medium transition-all ${
+                        colorTab === "pastel"
+                          ? "bg-white/20 text-white"
+                          : "bg-white/5 text-white/60 hover:bg-white/10"
+                      }`}
+                    >
+                      Pastel
+                    </button>
+                    <button
+                      onClick={() => setColorTab("vivid")}
+                      className={`flex-1 py-1.5 px-3 rounded-md text-xs font-medium transition-all ${
+                        colorTab === "vivid"
+                          ? "bg-white/20 text-white"
+                          : "bg-white/5 text-white/60 hover:bg-white/10"
+                      }`}
+                    >
+                      Vivid
+                    </button>
+                  </div>
+                  {/* Color Grid */}
                   <div className="grid grid-cols-4 gap-2">
-                    {COLOR_PALETTE.map((color) => (
+                    {(colorTab === "pastel" ? PASTEL_COLORS : VIVID_COLORS).map((color) => (
                       <button
                         key={color}
                         onClick={() => handleColorSelect(color)}
