@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { ArrowLeft } from "lucide-react"
+import { useSession, signIn } from "next-auth/react"
 
 interface StyleOption {
   id: string
@@ -38,9 +39,16 @@ const STYLE_OPTIONS: StyleOption[] = [
 
 export default function StorePage() {
   const router = useRouter()
+  const { data: session } = useSession()
 
-  const handleSelectStyle = (styleId: string) => {
-    router.push(`/?styleType=${styleId}`)
+  const handleBuyBadge = (styleId: string) => {
+    if (!session) {
+      // 인증되지 않은 경우 GitHub 로그인
+      signIn("github")
+    } else {
+      // 인증된 경우 결제 페이지로 이동
+      router.push(`/checkout?styleId=${styleId}`)
+    }
   }
 
   return (
@@ -124,10 +132,10 @@ export default function StorePage() {
                 {/* Action Button - Only show for paid styles */}
                 {style.price !== "free" && (
                   <button
-                    onClick={() => handleSelectStyle(style.id)}
+                    onClick={() => handleBuyBadge(style.id)}
                     className="w-full py-2 px-4 rounded-lg bg-white/20 text-white font-medium text-sm hover:bg-white/30 transition-all"
                   >
-                    Buy This Style
+                    Buy This Badge
                   </button>
                 )}
               </div>
