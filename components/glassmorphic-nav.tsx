@@ -5,6 +5,7 @@ import { Check, Copy, ExternalLink } from "lucide-react"
 import { useState, useEffect } from "react"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
+import { AuthButton } from "./auth-button"
 
 interface Toast {
   id: number
@@ -225,6 +226,11 @@ export function GlassmorphicNav() {
 
   return (
     <div className="relative w-full max-w-7xl mx-auto px-4">
+      {/* Auth Button - Top Right */}
+      <div className="absolute top-0 right-4">
+        <AuthButton />
+      </div>
+
       <div className="mb-10 text-center">
         <div className="flex items-center justify-center gap-3 mb-3">
           <svg
